@@ -19,19 +19,16 @@ Usage
 """
 
 class qsorted(object):
-    def __init__(self, orig_list, inplace = True):
+    def __init__(self, orig_list):
         """Creates object answering to adressing single in sorted place elements
-        or small slices of list. Assumes large size of list and therefore do
-        sorting in place (behaviour switchable by inplace parameter).
+        or small slices of list. Assumes large size of list and therefore doing
+        sorting in place.
         """
         # TODO: check if fully_sorted, if so do nothing
         # TODO: keep list of sorted chunks to speed up consecutive calls
-        if inplace:
-            self._list = orig_list
-        else:
-            self._list = orig_list[:]
+        self._list = orig_list
     def _quickselect(self, key, left_bound=0, right_bound=None):
-        """selects and puts on position k-th element of sorted list"""
+        """Selects and puts on position k-th element of sorted list"""
         # TODO: possibly reimplement in C (using Cython?)
         while True:
             pivot = self._list[left_bound]
@@ -72,7 +69,7 @@ class qsorted(object):
         sorted[slice] -> sorted slice of elemented from list
 
         Due to O(N) nature of QuickSelect algoritm it will be optimal to
-        ask for small slices (comparable to size of list), otherwise
+        ask for small slices (in comparison to size of list), otherwise
         performance will be degraded to builtin sorted function
         """
         if isinstance(key, slice):
@@ -95,8 +92,6 @@ class qsorted(object):
                 yield self._quickselect(i, left_bound = i)
         return iter()
 
-
-
 if __name__ == "__main__":
     import random
 
@@ -110,7 +105,7 @@ if __name__ == "__main__":
     assert sort[3:6] == [3, 3, 4]
 
     size = 1000000
-    fro, to = 0, 30
+    fro, to = 0, 300
     norm_random_list = range(0,size)
     random.shuffle(norm_random_list)
     # norm_random_list = [ random.randint(0,1000000) for _ in xrange(size) ]
